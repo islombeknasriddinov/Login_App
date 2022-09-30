@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:loginapp/pages/home_page.dart';
 
 class SignUpPage extends StatefulWidget {
   static final String id = "signup_page";
@@ -8,6 +9,8 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -145,17 +148,22 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
 
                     //#signUp
-                    Container(
-                      margin: EdgeInsets.symmetric(horizontal: 50),
-                      height: 50,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(50),
-                          color: Colors.grey[700]),
-                      child: Center(
-                        child: Text(
-                          "SignUp",
-                          style: TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.bold),
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.pushReplacementNamed(context, HomePage.id);
+                      },
+                      child: Container(
+                        margin: EdgeInsets.symmetric(horizontal: 50),
+                        height: 50,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(50),
+                            color: Colors.grey[700]),
+                        child: Center(
+                          child: Text(
+                            "SignUp",
+                            style: TextStyle(
+                                color: Colors.white, fontWeight: FontWeight.bold),
+                          ),
                         ),
                       ),
                     ),

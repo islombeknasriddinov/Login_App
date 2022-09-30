@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:loginapp/pages/signup_page.dart';
 
@@ -8,7 +10,47 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin{
+
+  Animation<Offset>? _slideAnimation;
+  AnimationController? _animationController;
+
+  _openSignUpPage(){
+    Timer(Duration(milliseconds: 250), (){
+      Navigator.pushReplacementNamed(context, SignUpPage.id);
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _animationController = AnimationController(vsync: this, duration: Duration(milliseconds: 300));
+
+    _slideAnimation = Tween<Offset>(
+        begin: Offset.zero,
+        end: Offset(1.0, 0.0)
+    ).animate(
+        CurvedAnimation(
+            parent: _animationController!,
+            curve: Curves.easeInCubic
+        )
+    );
+
+    _animationController!.addStatusListener((AnimationStatus status){
+      if(status == AnimationStatus.forward){
+          _openSignUpPage();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _animationController!.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,7 +69,7 @@ class _HomePageState extends State<HomePage> {
             height: 80,
           ),
           //#login, #welcome
-          Padding(
+          SlideTransition(position: _slideAnimation!, child: Padding(
             padding: EdgeInsets.all(20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -45,7 +87,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ],
             ),
-          ),
+          ),),
           SizedBox(
             height: 21,
           ),
@@ -118,7 +160,7 @@ class _HomePageState extends State<HomePage> {
                     //#login
                     GestureDetector(
                       onTap: (){
-                        Navigator.pushReplacementNamed(context, SignUpPage.id);
+                       _animationController!.forward();
                       },
                       child: Container(
                         margin: EdgeInsets.symmetric(horizontal: 50),
